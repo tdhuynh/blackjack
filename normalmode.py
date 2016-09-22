@@ -12,27 +12,27 @@ class Person:
         pass
 
 
-suit = (['Clubs'], ['Spades'], ['Diamonds'], ['Hearts'])
-character = (['A'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9'], ['10'], ['J'], ['Q'], ['K'])
+suits = (['Clubs'], ['Spades'], ['Diamonds'], ['Hearts'])
+characters = (['A'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9'], ['10'], ['J'], ['Q'], ['K'])
 
-class Cards:
-
-    def __init__(self, suit, character):
-        self.suit = choice(suit)
-        self.character = choice(character)
-
-    def get_card(self):
-        random_card = [self.suit, self.character]
-        return random_card
-
-
-
-card = Cards(choice(suit), choice(character))
-print(card.get_card())
-
-
+# class Cards:
+#     def __init__(self, suits, characters):
+#         self.suits = choice(suits)
+#         self.characters = choice(characters)
 #
-#
-# class Deck:
-#     def __init__(self):
-#         pass
+#     def get_card(self):
+#         random_card = self.suits, self.characters
+#         return random_card
+
+class Deck:
+    def __init__(self):
+        self.cards = [(suit, character) for suit in suits for character in characters]
+
+    def shuffle_deck(self):
+         shuffle(self.cards)
+
+
+# card = Cards(choice(suits), choice(characters))
+deck = Deck()
+deck.shuffle_deck()
+print(deck.cards)
