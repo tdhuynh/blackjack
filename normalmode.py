@@ -7,13 +7,13 @@
 from random import choice
 from random import shuffle
 
+suits = ('Clubs', 'Spades', 'Diamonds', 'Hearts')
+characters = ('A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K')
+
+
 class Person:
-    def __init__(self):
-        pass
-
-
-suits = (['Clubs'], ['Spades'], ['Diamonds'], ['Hearts'])
-characters = (['A'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9'], ['10'], ['J'], ['Q'], ['K'])
+    def __init__(self, name):
+        self.name = name
 
 # class Cards:
 #     def __init__(self, suits, characters):
@@ -24,15 +24,39 @@ characters = (['A'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9'], ['1
 #         random_card = self.suits, self.characters
 #         return random_card
 
+
 class Deck:
     def __init__(self):
         self.cards = [(suit, character) for suit in suits for character in characters]
 
     def shuffle_deck(self):
-         shuffle(self.cards)
+        shuffle(self.cards)
+
+    def deal_card(self):
+        return self.cards.pop(0)
 
 
-# card = Cards(choice(suits), choice(characters))
+class Hand:
+    def __init__(self):
+        self.hand = []
+
+    def add_card_to_hand(self, card):
+        self.hand.append(card)
+        return self.hand
+
+
+player1 = Person("Player 1")
+dealer = Person("Dealer")
 deck = Deck()
+player1_hand = Hand()
+dealer_hand = Hand()
+
 deck.shuffle_deck()
-print(deck.cards)
+
+player1_hand.add_card_to_hand(deck.deal_card())
+dealer_hand.add_card_to_hand(deck.deal_card())
+player1_hand.add_card_to_hand(deck.deal_card())
+dealer_hand.add_card_to_hand(deck.deal_card())
+
+print(player1_hand.hand)
+print(dealer_hand.hand)
