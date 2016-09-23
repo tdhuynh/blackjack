@@ -9,7 +9,7 @@ from random import shuffle
 
 suits = ('Clubs', 'Spades', 'Diamonds', 'Hearts')
 characters = ('A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K')
-
+scores = {'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10}
 
 class Person:
     def __init__(self, name):
@@ -44,19 +44,37 @@ class Hand:
         self.hand.append(card)
         return self.hand
 
+    def get_score(self):
 
 player1 = Person("Player 1")
 dealer = Person("Dealer")
-deck = Deck()
-player1_hand = Hand()
-dealer_hand = Hand()
 
+deck = Deck()
+player_hand = Hand()
+dealer_hand = Hand()
 deck.shuffle_deck()
 
-player1_hand.add_card_to_hand(deck.deal_card())
-dealer_hand.add_card_to_hand(deck.deal_card())
-player1_hand.add_card_to_hand(deck.deal_card())
-dealer_hand.add_card_to_hand(deck.deal_card())
 
-print(player1_hand.hand)
-print(dealer_hand.hand)
+print(deck.cards)
+
+for i in range(2):
+    dealer_hand.add_card_to_hand(deck.deal_card())
+    player_hand.add_card_to_hand(deck.deal_card())
+
+print(dealer_hand.hand, player_hand.hand)
+
+# check for win here
+
+while True:
+    hit_or_stand = input("[H]it or [S]tand? ")
+    if hit_or_stand.upper() == 'H':
+        player_hand.add_card_to_hand(deck.deal_card())
+        print(player_hand.hand)
+        # if value > 21:
+        #     bust
+    else:
+        # check to see who wins
+        if dealer.value <= 16:
+            dealer_hand.add_card_to_hand(deck.deal_card())
+        # else:
+            # check for bust or win
