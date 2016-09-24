@@ -9,25 +9,34 @@ from random import shuffle
 
 suits = ('Clubs', 'Spades', 'Diamonds', 'Hearts')
 characters = ('A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K')
-scores = {'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10}
+values = {'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10}
 
 class Person:
     def __init__(self, name):
         self.name = name
+        self.hand = []
 
-# class Cards:
-#     def __init__(self, suits, characters):
-#         self.suits = choice(suits)
-#         self.characters = choice(characters)
-#
-#     def get_card(self):
-#         random_card = self.suits, self.characters
-#         return random_card
+    def add_card_to_hand(self, card):
+        self.hand.append(card)
+        return self.hand
+
+    def check_values(self):
+        value = 0
+        for card in self.hand:
+            char = card[1]
+            value += values[char]
+        return value
+
+    def check_blackjack_or_bust(self):
+        if 21 == self.check_values():
+            print("Blackjack! {} wins!".format(self.name))
+        elif 21 < self.check_values():
+            print("Bust! {} loses!".format(self.name))
 
 
 class Deck:
     def __init__(self):
-        self.cards = [(suit, character) for suit in suits for character in characters]
+        self.cards = [(suit, char) for suit in suits for char in characters]
 
     def shuffle_deck(self):
         shuffle(self.cards)
@@ -36,45 +45,46 @@ class Deck:
         return self.cards.pop(0)
 
 
-class Hand:
-    def __init__(self):
-        self.hand = []
+def check_win(player, dealer):
+    if 21 >= player.check_values() > dealer.check_values():
+        print("Player wins!")
+    elif 21 >= dealer.check_values() > player.check_values():
+        print("Dealer wins!")
 
-    def add_card_to_hand(self, card):
-        self.hand.append(card)
-        return self.hand
 
-    def get_score(self):
+# class Hand:
+    # def get_score(self):
+    #     value = 0
+    #     for card in self.hand:
+    #         value += card[1]
+    #     return value
 
-player1 = Person("Player 1")
+
+player = Person("Player")
 dealer = Person("Dealer")
-
 deck = Deck()
-player_hand = Hand()
-dealer_hand = Hand()
 deck.shuffle_deck()
-
-
-print(deck.cards)
-
 for i in range(2):
-    dealer_hand.add_card_to_hand(deck.deal_card())
-    player_hand.add_card_to_hand(deck.deal_card())
+    dealer.add_card_to_hand(deck.deal_card())
+    player.add_card_to_hand(deck.deal_card())
+print(dealer.hand, player.hand)
+player.check_blackjack_or_bust()
+dealer.check_blackjack_or_bust()
 
-print(dealer_hand.hand, player_hand.hand)
-
-# check for win here
 
 while True:
     hit_or_stand = input("[H]it or [S]tand? ")
     if hit_or_stand.upper() == 'H':
-        player_hand.add_card_to_hand(deck.deal_card())
-        print(player_hand.hand)
-        # if value > 21:
-        #     bust
+        player.add_card_to_hand(deck.deal_card())
+        print(player.hand)
+        print(player.check_values())
+        player.check_blackjack_or_bust()
     else:
         # check to see who wins
-        if dealer.value <= 16:
-            dealer_hand.add_card_to_hand(deck.deal_card())
-        # else:
-            # check for bust or win
+        while dealer.check_values() <= 16:
+            dealer.add_card_to_hand(deck.deal_card())
+            print(dealer.hand)
+            print(dealer.check_values())
+            dealer.check_blackjack_or_bust()
+
+        check_win(player, dealer)
