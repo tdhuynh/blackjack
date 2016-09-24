@@ -4,7 +4,6 @@
 # check for 21 after deal
 # each time a hit happens, check for win
 
-from random import choice
 from random import shuffle
 
 suits = ('Clubs', 'Spades', 'Diamonds', 'Hearts')
@@ -25,6 +24,10 @@ class Person:
         for card in self.hand:
             char = card[1]
             value += values[char]
+            if char == 'A' and value < 12:
+                value += 10
+            else:
+                continue
         return value
 
     def check_blackjack_or_bust(self):
