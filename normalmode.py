@@ -1,6 +1,4 @@
 
-# dealer's second card is hidden
-
 import sys
 from random import shuffle
 
@@ -31,16 +29,16 @@ class Person:
 
     def check_blackjack_or_bust(self):
         if 21 == self.check_values():
-            print("Blackjack! {} wins!".format(self.name))
+            print("{} wins!".format(self.name))
             sys.exit()
         elif 21 < self.check_values():
-            print("Bust! {} loses!".format(self.name))
+            print("{} loses!".format(self.name))
             sys.exit()
 
     def get_info(self):
         print(self.name)
         print(self.hand)
-        print(self.check_values())
+        print("Total Value: {}".format(self.check_values()))
 
     def partial_info(self):
         print(self.name)
@@ -65,6 +63,8 @@ def check_win(player, dealer):
     elif 21 >= dealer.check_values() > player.check_values():
         print("Dealer wins!")
         sys.exit()
+    else:
+        print("Dealer wins!")
 
 
 player = Person("Player")
@@ -78,8 +78,7 @@ player.get_info()
 dealer.partial_info()
 player.check_blackjack_or_bust()
 
-
-while player.check_values() < 21 and dealer.check_values() < 21:
+while True:
     hit_or_stand = input("[H]it or [S]tand? ")
     if hit_or_stand.upper() == 'H':
         player.add_card_to_hand(deck.deal_card())
