@@ -18,21 +18,25 @@ class Person:
 
     def check_values(self):
         value = 0
+        ace = False
         for card in self.hand:
             char = card[1]
             value += values[char]
             if char == 'A' and value < 12:
                 value += 10
+                ace = True
             else:
-                continue
+                if ace is True and value > 21:
+                    value -= 10
+                    ace = False
         return value
 
     def check_blackjack_or_bust(self):
         if 21 == self.check_values():
-            print("{} wins!".format(self.name))
+            print("Blackjack! {} wins!".format(self.name))
             sys.exit()
         elif 21 < self.check_values():
-            print("{} loses!".format(self.name))
+            print("Bust! {} loses!".format(self.name))
             sys.exit()
 
     def get_info(self):
@@ -43,6 +47,11 @@ class Person:
     def partial_info(self):
         print(self.name)
         print(self.hand[0])
+
+    def turn(self):
+        self.add_card_to_hand(deck.deal_card())
+        self.get_info()
+        self.check_blackjack_or_bust()
 
 
 class Deck:
@@ -81,14 +90,10 @@ player.check_blackjack_or_bust()
 while True:
     hit_or_stand = input("[H]it or [S]tand? ")
     if hit_or_stand.upper() == 'H':
-        player.add_card_to_hand(deck.deal_card())
-        player.get_info()
-        player.check_blackjack_or_bust()
+        player.turn()
     else:
         dealer.get_info()
         dealer.check_blackjack_or_bust()
         while dealer.check_values() < 17:
-            dealer.add_card_to_hand(deck.deal_card())
-            dealer.get_info()
-            dealer.check_blackjack_or_bust()
+            dealer.turn()
         check_win(player, dealer)
